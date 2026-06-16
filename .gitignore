@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local Vector Database
+vector_db/
+
+# Local Models
+models/
+
+# Environment Variables
+.env
+
+# Python Virtual Environment
+venv/

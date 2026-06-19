@@ -1,4 +1,4 @@
-#  — Knowledge Assistant Platform
+#  Knowledge Assistant Platform
 
 An AI-powered knowledge assistant that uses Retrieval-Augmented Generation (RAG) to answer questions from an internal knowledge base. Built with a Flask API backend, Ollama LLM inference, and a React (Vite) frontend.
 
@@ -230,6 +230,39 @@ Send a question and receive a streamed response.
 | CORS errors in browser | The Flask backend includes CORS support. Ensure `main.py` is running |
 
 ---
+## Development Journey
+
+### Day 1 – Foundation & Local LLM Setup
+
+* Finalized project architecture and use cases.
+* Set up GitHub repository and development environment.
+* Installed and configured Ollama locally.
+* Downloaded and tested Llama 3 8B.
+* Integrated LangChain with Ollama.
+* Created initial project structure.
+* Prepared first knowledge base documents.
+* Designed RAG pipeline workflow.
+
+### Day 2 – Retrieval-Augmented Generation (RAG)
+
+* Implemented document loading and chunking pipeline.
+* Generated embeddings using HuggingFace BGE models.
+* Integrated ChromaDB vector database.
+* Built semantic retrieval functionality.
+* Developed terminal-based chatbot prototype.
+* Improved prompt engineering and response quality.
+* Added fallback handling and conversational behaviour.
+
+### Day 3 – Full Stack Integration
+
+* Developed React + Vite frontend interface.
+* Implemented enterprise-style chatbot UI.
+* Added collapsible navigation sidebar.
+* Integrated Flask backend APIs.
+* Connected frontend with RAG pipeline.
+* Enabled real-time response streaming.
+* Completed end-to-end testing and validation.
+* Successfully deployed a working MVP.
 
 ## Tech Stack
 
@@ -241,3 +274,26 @@ Send a question and receive a streamed response.
 | Embeddings| HuggingFace `bge-small-en-v1.5`         |
 | Vector DB | ChromaDB                                |
 | Framework | LangChain                               |
+
+## Project Status
+
+Current Version: MVP v1.0
+
+### Implemented Features
+
+* Semantic document retrieval
+* ChromaDB vector search
+* Ollama Llama 3 integration
+* React web interface
+* Flask API backend
+* Streaming chatbot responses
+* Knowledge base document ingestion
+* Enterprise-ready architecture
+
+### Planned Enhancements
+
+* Multi-document collections
+* User authentication
+* Source citations
+* Advanced analytics dashboard
+* Multi-domain knowledge repositories

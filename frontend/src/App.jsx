@@ -41,6 +41,9 @@ const SettingsIcon = () => (
   </svg>
 );
 
+// ─── API Configuration ────────────────────────────────────────────────────────
+const API_URL = import.meta.env.VITE_API_URL || "https://knowledge-assistant-platform.onrender.com";
+
 // ─── App Component ─────────────────────────────────────────────────────────────
 
 function App() {
@@ -58,7 +61,7 @@ function App() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        const r = await fetch(`${import.meta.env.VITE_API_URL}/api/health`);
+        const r = await fetch(`${API_URL}/api/health`);
         setServerStatus(r.ok ? "online" : "offline");
       } catch { setServerStatus("offline"); }
     };
@@ -93,7 +96,7 @@ function App() {
     let botAdded = false, botText = "";
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+      const response = await fetch(`${API_URL}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: query }),
       });

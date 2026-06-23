@@ -42,7 +42,7 @@ const SettingsIcon = () => (
 );
 
 // ─── API Configuration ────────────────────────────────────────────────────────
-const API_URL = import.meta.env.VITE_API_URL || "https://knowledge-assistant-platform.onrender.com";
+const API_URL = (import.meta.env.VITE_API_URL || "https://knowledge-assistant-platform.onrender.com").replace(/\/+$/, "");
 
 // ─── App Component ─────────────────────────────────────────────────────────────
 

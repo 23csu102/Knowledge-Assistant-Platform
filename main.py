@@ -11,9 +11,8 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Allow requests from Vercel frontend (set FRONTEND_URL env var in production)
-FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
-CORS(app, origins=[FRONTEND_URL] if FRONTEND_URL != "*" else "*")
+# Allow all origins — covers Vercel preview URLs and production domain
+CORS(app, origins="*")
 
 # Global variables for models and database
 embedding_model = None

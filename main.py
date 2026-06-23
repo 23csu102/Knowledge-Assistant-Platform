@@ -4,10 +4,16 @@ from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from langchain_community.vectorstores import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_ollama import OllamaLLM
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS to allow the frontend to access the API
+
+# Allow requests from Vercel frontend (set FRONTEND_URL env var in production)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
+CORS(app, origins=[FRONTEND_URL] if FRONTEND_URL != "*" else "*")
 
 # Global variables for models and database
 embedding_model = None
@@ -34,10 +40,15 @@ def init_models():
             embedding_function=embedding_model
         )
 
-        print("Initializing Ollama LLM (llama3:8b)...")
-        llm = OllamaLLM(
-            model="llama3:8b",
-            base_url="http://localhost:11434"
+        groq_api_key = os.getenv("GROQ_API_KEY")
+        if not groq_api_key:
+            raise ValueError("GROQ_API_KEY environment variable is not set.")
+
+        print("Initializing Groq LLM (llama3-8b-8192)...")
+        llm = ChatGroq(
+            model="llama3-8b-8192",
+            groq_api_key=groq_api_key,
+            streaming=True
         )
         print("Models initialized successfully!")
     except Exception as e:
@@ -47,20 +58,13 @@ def init_models():
 def health_check():
     """Check the health status of the backend services."""
     db_loaded = db is not None
-    ollama_ok = False
-    
-    # Try calling Ollama's local status API
-    try:
-        response = requests.get("http://localhost:11434", timeout=2)
-        if response.status_code == 200:
-            ollama_ok = True
-    except Exception:
-        pass
+    llm_ready = llm is not None
 
     return jsonify({
-        "status": "healthy" if (db_loaded and ollama_ok) else "degraded",
+        "status": "healthy" if (db_loaded and llm_ready) else "degraded",
         "database_loaded": db_loaded,
-        "ollama_connected": ollama_ok,
+        "llm_ready": llm_ready,
+        "llm_provider": "groq",
         "details": {
             "db_path": os.path.join(os.path.dirname(__file__), "vector_db"),
             "db_exists": os.path.exists(os.path.join(os.path.dirname(__file__), "vector_db"))
@@ -158,7 +162,8 @@ Answer:
         def generate():
             try:
                 for chunk in llm.stream(prompt):
-                    yield chunk
+                    # ChatGroq yields AIMessageChunk objects; extract text content
+                    yield chunk.content
             except Exception as e:
                 print(f"Error during stream generation: {e}")
                 yield f"\n[Error during generation: {str(e)}]"
@@ -173,4 +178,6 @@ Answer:
 
 if __name__ == "__main__":
     init_models()
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    port = int(os.getenv("PORT", 5000))
+    debug = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.run(host="0.0.0.0", port=port, debug=debug)

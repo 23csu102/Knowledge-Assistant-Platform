@@ -217,8 +217,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Local Vector Database
-vector_db/
+# Local Vector Database — commit this so Render can use it
+# vector_db/   <-- intentionally NOT ignored for deployment
 
 # Local Models
 models/

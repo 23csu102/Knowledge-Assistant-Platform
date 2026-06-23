@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: disha-backend
+    runtime: python
+    region: singapore  # Closest free region to India
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python src/create_embeddings.py
+    startCommand: gunicorn --workers 1 --bind 0.0.0.0:$PORT --timeout 120 --preload main:app
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false          # You will paste this manually in Render dashboard
+      - key: FRONTEND_URL
+        sync: false          # Paste your Vercel URL after frontend is deployed
+      - key: PYTHON_VERSION
+        value: 3.11.0

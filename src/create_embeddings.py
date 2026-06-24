@@ -1,8 +1,7 @@
 import os
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-# pyrefly: ignore [missing-import]
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_community.vectorstores import Chroma
 
 # Get the project root directory (one level up from this script's directory)
@@ -29,7 +28,7 @@ chunks = splitter.split_documents(documents)
 
 print(f"Chunks Created: {len(chunks)}")
 
-embedding_model = HuggingFaceEmbeddings(
+embedding_model = FastEmbedEmbeddings(
     model_name="BAAI/bge-small-en-v1.5"
 )
 

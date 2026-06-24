@@ -1,9 +1,8 @@
 import os
-import requests
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from langchain_community.vectorstores import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 
@@ -22,8 +21,8 @@ llm = None
 def init_models():
     global embedding_model, db, llm
     try:
-        print("Initializing HuggingFace embeddings model...")
-        embedding_model = HuggingFaceEmbeddings(
+        print("Initializing FastEmbed embeddings model (ONNX, lightweight)...")
+        embedding_model = FastEmbedEmbeddings(
             model_name="BAAI/bge-small-en-v1.5"
         )
 

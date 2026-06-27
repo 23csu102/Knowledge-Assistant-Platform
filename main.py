@@ -113,7 +113,7 @@ def chat():
         # Similarity Search with Relevance Score
         results = db.similarity_search_with_relevance_scores(
             question,
-            k=5
+            k=10
         )
 
         # If no relevant information found
@@ -142,7 +142,10 @@ Rules:
 - Never suggest alternative questions.
 - Use bullet points for lists.
 - Use numbered points for processes.
-- Keep answers concise and professional.
+- Give complete answers whenever the question asks for an explanation, summary, achievements, objectives, challenges, or comparison.
+- Include all relevant points available in the information.
+- Use bullet points for multiple items.
+- Keep the response clear and well-structured rather than unnecessarily brief.
 - If information is unavailable, respond exactly with:
 
 I'm unable to answer that question at the moment.
